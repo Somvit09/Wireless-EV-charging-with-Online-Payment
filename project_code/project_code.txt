@@ -1,0 +1,103 @@
+// Include libraries
+#include <Wire.h>      // Library for I2C communication
+#include <LiquidCrystal.h>  // Library for LCD display
+#include <Adafruit_INA219.h>  // Library for current sensor
+
+// Define pins
+const int RELAY_PIN = 2;   // Pin for relay coil
+const int TRIGGER_PIN = 3;   // Pin for ultrasonic sensor trigger
+const int ECHO_PIN = 4;    // Pin for ultrasonic sensor echo
+const int LED_PIN = 13;    // Pin for LED indicator
+const int VOUT_PIN = A0;   // Pin for voltage sensing
+const int IOUT_PIN = A1;   // Pin for current sensing
+
+// Initialize objects
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);   // LCD display object
+Adafruit_INA219 ina219;   // Current sensor object
+
+// Define variables
+float voltage, current, power;
+int distance;
+
+void setup() {
+  // Initialize serial communication
+  Serial.begin(9600); //9600 baud for communication
+
+  // Initialize LCD display
+  lcd.begin(16, 2);
+  lcd.print("Wireless Charging");
+  lcd.setCursor(0, 1);
+  lcd.print("Circuit");
+
+  // Initialize current sensor
+  ina219.begin();
+
+  //pinMode(RELAY_PIN, OUTPUT) is an Arduino function used to set the mode of a specific pin on the board to either input or output. 
+  //In this case, RELAY_PIN is the pin number of the Arduino board connected to the relay coil.
+  //The OUTPUT parameter indicates that this pin will be used for outputting a signal to the relay coil.
+  //By setting the pin mode to output, we can control the state of the relay coil by setting the pin to either HIGH or LOW. 
+  //When the pin is set to HIGH, 
+  //it will provide a voltage to the relay coil and activate it. When the pin is set to LOW, it will cut off the voltage to the relay coil 
+  //and deactivate it.
+
+  // Initialize pins
+  pinMode(RELAY_PIN, OUTPUT);
+  pinMode(TRIGGER_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+  pinMode(LED_PIN, OUTPUT);
+}
+
+void loop() {
+  // Measure voltage and current
+  voltage = analogRead(VOUT_PIN) * 0.00488;   // Convert analog reading to voltage
+  current = ina219.getCurrent_mA() / 1000.0;   // Convert current reading to amps
+
+  // Calculate power
+  power = voltage * current;
+
+  // Display measurements on LCD
+  lcd.setCursor(0, 0);
+  lcd.print("V: ");
+  lcd.print(voltage);
+  lcd.print("  I: ");
+  lcd.print(current);
+  lcd.setCursor(0, 1);
+  lcd.print("P: ");
+  lcd.print(power);
+
+  // Check distance with ultrasonic sensor
+
+  //digitalWrite(RELAY_PIN, HIGH) would set the pin connected to the relay coil to a logic HIGH state, which would activate the relay coil.   
+  //Conversely, digitalWrite(RELAY_PIN, LOW) would set the pin to a logic LOW state, which would deactivate the relay coil.  
+
+  digitalWrite(TRIGGER_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIGGER_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIGGER_PIN, LOW);
+  distance = pulseIn(ECHO_PIN, HIGH) / 58;   // Convert time to distance
+
+  // Turn on relay coil if distance is less than 10cm
+  if (distance < 10) {
+    digitalWrite(RELAY_PIN, HIGH);
+    digitalWrite(LED_PIN, HIGH);
+  } else {
+    digitalWrite(RELAY_PIN, LOW);
+    digitalWrite(LED_PIN, LOW);
+  }
+
+  // Print measurements and distance to serial monitor
+  Serial.print("Voltage: ");
+  Serial.print(voltage);
+  Serial.print(" V, Current: ");
+  Serial.print(current);
+  Serial.print(" A, Power: ");
+  Serial.print(power);
+  Serial.print(" W, Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  // Wait for a moment
+  delay(1000);
+}
+

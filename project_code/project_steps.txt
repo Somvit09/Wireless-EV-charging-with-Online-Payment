@@ -1,0 +1,71 @@
+here are the detailed steps to make a wireless charging circuit for vehicles with an LCD display, relay coil, current sensor, ultrasonic sensor, induction coil, and Arduino Uno:
+
+Gather all the necessary components and tools:
+
+Components:
+
+Arduino Uno board
+Induction coil
+Ultrasonic sensor (HC-SR04)
+Relay module
+Current sensor (INA219)
+LCD display (16x2)
+Resistors (220 Ohm and 10k Ohm)
+Capacitors (100uF and 10uF)
+Jumper wires
+
+
+Tools:
+
+Soldering iron
+Solder wire
+Breadboard
+USB cable (to connect Arduino to PC)
+
+Connect the components to the Arduino Uno board as follows:
+
+Induction coil:
+
+Connect the positive (+) pin of the induction coil to the NC (Normally Closed) pin of the relay module
+Connect the negative (-) pin of the induction coil to the COM (Common) pin of the relay module
+
+
+Relay module:
+
+Connect the VCC pin of the relay module to the 5V pin of the Arduino Uno board
+Connect the GND pin of the relay module to the GND pin of the Arduino Uno board
+Connect the IN pin of the relay module to pin 10 of the Arduino Uno board
+
+
+Ultrasonic sensor:
+
+Connect the VCC pin of the ultrasonic sensor to the 5V pin of the Arduino Uno board
+Connect the GND pin of the ultrasonic sensor to the GND pin of the Arduino Uno board
+Connect the TRIG pin of the ultrasonic sensor to pin 9 of the Arduino Uno board
+Connect the ECHO pin of the ultrasonic sensor to pin 8 of the Arduino Uno board
+
+
+Current sensor:
+
+Connect the VCC pin of the current sensor to the 5V pin of the Arduino Uno board
+Connect the GND pin of the current sensor to the GND pin of the Arduino Uno board
+Connect the SDA pin of the current sensor to pin A4 of the Arduino Uno board
+Connect the SCL pin of the current sensor to pin A5 of the Arduino Uno board
+
+
+LCD display:
+
+Connect the VSS pin of the LCD display to the GND pin of the Arduino Uno board
+Connect the VDD pin of the LCD display to the 5V pin of the Arduino Uno board
+Connect the V0 pin of the LCD display to the center pin of a 10k Ohm potentiometer
+Connect one end of the potentiometer to the GND pin of the Arduino Uno board
+Connect the other end of the potentiometer to the 5V pin of the Arduino Uno board
+Connect the RS pin of the LCD display to pin 2 of the Arduino Uno board
+Connect the RW pin of the LCD display to the GND pin of the Arduino Uno board
+Connect the E pin of the LCD display to pin 3 of the Arduino Uno board
+Connect the D4-D7 pins of the LCD display to pins 4-7 of the Arduino Uno board
+Connect the LED+ pin of the LCD display to the 5V pin of the Arduino Uno board through a 220 Ohm resistor
+Connect the LED- pin of the LCD display to the GND pin of the Arduino Uno board
+
+
+Write the code to control the charging process. Here is a sample code that you can modify to suit your needs:

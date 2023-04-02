@@ -1,0 +1,13 @@
+voltage = analogRead(VOUT_PIN) * 0.00488; - This line of code measures the voltage of the circuit by reading the analog input from the VOUT_PIN. The analogRead() function returns a value between 0 and 1023, which represents the voltage level between 0V and 5V. The multiplication factor of 0.00488 is used to convert this value to the actual voltage value, since each step of the ADC (analog-to-digital converter) represents 0.00488V for a 5V reference voltage. Therefore, multiplying the raw value by 0.00488 gives the voltage in volts.
+
+current = ina219.getCurrent_mA() / 1000.0; - This line of code measures the current of the circuit using the current sensor ina219. The ina219.getCurrent_mA() function returns the current value in milliamperes (mA). To convert this to amperes (A), we divide the value by 1000.0. Therefore, the current variable will contain the actual current value in amperes.
+
+
+
+pulseIn(ECHO_PIN, HIGH) - This function measures the duration of the pulse on the ECHO_PIN. The ECHO_PIN is connected to the echo pin of the ultrasonic sensor, which generates a pulse when it sends an ultrasonic signal and receives the reflection from an object. The pulseIn function waits for the pulse to start and then returns the duration of the pulse in microseconds.
+
+/ 58 - The duration of the pulse is proportional to the distance to the object. The speed of sound is approximately 343 meters per second, or 0.0343 cm per microsecond. Therefore, dividing the duration of the pulse by 2 (since the ultrasonic signal needs to travel to the object and back) and then multiplying it by the speed of sound gives the distance to the object in centimeters.
+
+distance = pulseIn(ECHO_PIN, HIGH) / 58 - This line of code combines the previous two parts to measure the distance to the object in centimeters.
+
+So the line "distance = pulseIn(ECHO_PIN, HIGH) / 58" calculates the distance of the object from the ultrasonic sensor in centimeters.
