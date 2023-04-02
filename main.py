@@ -2,7 +2,7 @@
 import pyfirmata
 from pyfirmata import Arduino, util # Library for communication with the Arduino
 import time # Library for adding delay
-
+import lcddriver
 # Define pins
 RELAY_PIN = 2 # Pin for relay coil
 TRIGGER_PIN = 3 # Piduration = echo_pin.read_duration()n for ultrasonic sensor trigger
@@ -27,6 +27,9 @@ voltage = 0.0 # Initialize voltage variable
 current = 0.0 # Initialize current variable
 power = 0.0 # Initialize power variable
 distance = 0 # Initialize distance variable
+
+# defrining lcd 
+lcd = lcddriver.lcd()
 
 # Main loop
 while True:
@@ -67,12 +70,17 @@ while True:
     if distance < 10:
         board.digital[RELAY_PIN].write(1) # Set the relay coil pin to HIGH
         board.digital[LED_PIN].write(1) # Set the LED indicator pin to HIGH
+        lcd.display_string("EV charging Done!!")
     else:
         board.digital[RELAY_PIN].write(0) # Set the relay coil pin to LOW
         board.digital[LED_PIN].write(0) # Set the LED indicator pin to LOW
 
     # Print measurements and distance to the console
     print("Voltage: {0:.2f} V, Current: {1:.2f} A, Power: {2:.2f} W, Distance: {3:.2f} cm".format(voltage, current, power, distance))
+    lcd.display_string(voltage)
+    lcd.display_string(current)
+    lcd.display_string(power)
+    lcd.display_string(distance)
 
     # Wait for a moment
     time.sleep(1.0)
